@@ -4,9 +4,16 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/gin-gonic/gin"
+	"io"
 )
+
+func index (res http.ResponseWriter, req *http.Request) {
+	io.WriteString(res, "foo ran")
+}
+
+func name (res http.ResponseWriter, req *http.Request) {
+	io.WriteString(res, "ben")
+}
 
 func main() {
 	port := os.Getenv("PORT")
@@ -15,14 +22,11 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 
-	router := gin.New()
-	router.Use(gin.Logger())
-	router.LoadHTMLGlob("templates/*.tmpl.html")
-	router.Static("/static", "static")
+	http.HandleFunc("/", index)
+	http.HandleFunc("/ben", name)
 
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl.html", nil)
-	})
-
-	router.Run(":" + port)
+	err := http.ListenAndServe(":" + port, nil)
+	if err != nil {
+		log.Fatalln("Server error: ", err)
+	}
 }
