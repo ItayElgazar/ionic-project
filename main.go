@@ -5,37 +5,39 @@ import (
 	"net/http"
 	"os"
 	"io"
-	"gopkg.in/pg.v5"
+	"database/sql"
 	"fmt"
+	"encoding/json"
+	_ "github.com/lib/pq"
 )
 
-type User struct {
-	Id     int64
-	Name   string
-}
-
-func (u User) String() string {
-	return fmt.Sprintf("User<%d %s>", u.Id, u.Name)
-}
 
 func index (res http.ResponseWriter, req *http.Request) {
-	db := pg.Connect(&pg.Options{
-		User:     "bzvpyynezpuruw",
-		Database: "derkj04fmn4ff8",
-		Password: "xpyHRQ1ScLn0ZCGqsJLxOficyO",
-		Addr:     "54.75.230.123:5432",
-	})
+	db, err := sql.Open("postgres", "postgres://bzvpyynezpuruw:xpyHRQ1ScLn0ZCGqsJLxOficyO@ec2-54-75-230-123.eu-west-1.compute.amazonaws.com/derkj04fmn4ff8")
 
-	user1 := &User{
-		Name:   "admin",
-	}
-
-	err := db.Insert(user1)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	io.WriteString(res, "foo ran")
+	rows, errr := db.Query("SELECT * FROM users")
+
+	if errr != nil {
+		log.Fatal(errr)
+	}
+
+	defer rows.Close()
+
+	var results []string
+
+	for rows.Next() {
+		var id int
+		var username string
+		err = rows.Scan(&id, &username)
+		results = append(results, fmt.Sprintf("id: %v, username: %v", id, username))
+	}
+
+	slcB, _ := json.Marshal(results)
+	io.WriteString(res, string(slcB))
 }
 
 func name (res http.ResponseWriter, req *http.Request) {
