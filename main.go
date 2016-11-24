@@ -13,7 +13,7 @@ import (
 
 
 func index (res http.ResponseWriter, req *http.Request) {
-	db, err := sql.Open("postgres", "postgres://bzvpyynezpuruw:xpyHRQ1ScLn0ZCGqsJLxOficyO@ec2-54-75-230-123.eu-west-1.compute.amazonaws.com/derkj04fmn4ff8")
+	db, err := sql.Open("postgres", "postgres://bzvpyynezpuruw:xpyHRQ1ScLn0ZCGqsJLxOficyO@ec2-54-75-230-123.eu-west-1.compute.amazonaws.com/derkj04fmn4ff8?sslmode=require")
 
 	if err != nil {
 		log.Fatal(err)
