@@ -60,7 +60,15 @@ func main() {
 	router.GET("/drivers", Drivers)
 	router.GET("/driver/:uuid", DriverByUuid)
 	router.POST("/client", createClientRoute)
-	router.ServeFiles("/static/*filepath", http.Dir("/"))
+
+	pwd, error := os.Getwd()
+	if error != nil {
+		fmt.Println(error)
+		os.Exit(1)
+	}
+	fmt.Println(pwd)
+
+	router.ServeFiles("/static/*filepath", http.Dir(pwd))
 
 	go func() {
 		interruptChannel := make(chan os.Signal, 0)
