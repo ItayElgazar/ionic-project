@@ -8,7 +8,7 @@ import (
 
 // Returns all drivers as JSON
 func GetAllDrivers() string {
-	allDrivers, err := new(DAL.DB).GetAllDrivers()
+	allDrivers, err := DAL.Users()
 
 	if err != nil {
 		log.Panic(err)
@@ -19,8 +19,8 @@ func GetAllDrivers() string {
 }
 
 // Returns driver by ID as JSON
-func GetDriverByID(id int) string {
-	allDrivers, err := new(DAL.DB).GetDriverById(id)
+func GetDriverByID(uuid string) string {
+	allDrivers, err := DAL.UserByUUID(uuid)
 
 	if err != nil {
 		log.Panic(err)

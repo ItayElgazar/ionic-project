@@ -7,45 +7,12 @@ import (
 	"os"
 	"fmt"
 	"github.com/bnsd55/ionic-project/BL"
-	"strconv"
 	"github.com/julienschmidt/httprouter"
+	"os/signal"
+	"syscall"
+	"github.com/bnsd55/ionic-project/DAL"
+	"encoding/json"
 )
-
-/*
-func index(res http.ResponseWriter, req *http.Request) {
-	dbInfo := fmt.Sprintf("user=%s password=%s dbname=%s host=%s sslmode=require",
-		DB_USER, DB_PASSWORD, DB_NAME, DB_HOST)
-	db, err := sql.Open("postgres", dbInfo)
-	defer db.Close()
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	rows, errr := db.Query("SELECT * FROM users")
-	defer rows.Close()
-
-	if errr != nil {
-		log.Fatal(errr)
-	}
-
-	var results = make([]string, 2)
-
-	for rows.Next() {
-		var id int
-		var username string
-		err = rows.Scan(&id, &username)
-		results = append(results, fmt.Sprintf("id: %v, username: %v", id, username))
-	}
-
-	slcB, _ := json.Marshal(results)
-	io.WriteString(res, string(slcB))
-}
-
-func name(res http.ResponseWriter, req *http.Request) {
-	io.WriteString(res, "ben")
-}
-*/
 
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	fmt.Fprint(w, "Welcome!\n")
@@ -55,15 +22,29 @@ func Drivers(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	fmt.Fprint(w, BL.GetAllDrivers())
 }
 
-func DriverById(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	id, err := strconv.Atoi(params.ByName("id"))
+func DriverByUuid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	uuid := params.ByName("uuid")
 
-	if err != nil {
-		fmt.Fprint(w, "An error occuer when trying to convert string to int")
-		return
+	fmt.Fprint(w, BL.GetDriverByID(uuid))
+}
+
+
+func createClientRoute(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	type UserPhone struct {
+		PhoneNumber string `json:"phone_number"`
 	}
 
-	fmt.Fprint(w, BL.GetDriverByID(id))
+	decoder := json.NewDecoder(r.Body)
+
+	var phone UserPhone
+	err := decoder.Decode(&phone)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	DAL.CreateClient(phone.PhoneNumber);
+
+	log.Println(phone.PhoneNumber)
 }
 
 func main() {
@@ -77,7 +58,29 @@ func main() {
 
 	router.GET("/", Index)
 	router.GET("/drivers", Drivers)
-	router.GET("/driver/:id", DriverById)
+	router.GET("/driver/:uuid", DriverByUuid)
+	router.POST("/client", createClientRoute)
+	router.ServeFiles("/static/*filepath", http.Dir("/"))
+
+	go func() {
+		interruptChannel := make(chan os.Signal, 0)
+		// look for system interruptions
+		signal.Notify(interruptChannel, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM)
+		// lock lower code until interruptChannel receives signal
+		<-interruptChannel
+		// Other cleanup tasks
+		fmt.Println("Closing connection")
+		fmt.Println("Saving session")
+
+		// Accually Close DB session, maintain DATA integrity
+		DAL.DB.Close()
+		// Removes Temp, compiled JS files
+		// os.RemoveAll("./public/assets/scripts/")
+		// // Remove Temp, compiled stylesheets
+		// os.RemoveAll("./public/assets/stylesheets/")
+		// Explicitly call for system exit this is more graceful
+		os.Exit(0)
+	}()
 
 	err := http.ListenAndServe(":" + port, router)
 	if err != nil {

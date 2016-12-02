@@ -1,26 +1,15 @@
 package DAL
 
 import (
-	_ "github.com/lib/pq"
+	"crypto/rand"
+	"crypto/sha1"
 	"database/sql"
 	"fmt"
+	_ "github.com/lib/pq"
+	"log"
 )
 
-// All DB functions
-type DBProvider interface {
-	Drivers
-}
-
-// All driver functions
-type Drivers interface {
-	GetAllDrivers() ([]*Driver, error)
-	GetDriverById(id int) (*Driver, error)
-}
-
-// DB structg
-type DB struct {
-	*sql.DB
-}
+var DB *sql.DB
 
 // Database connection details
 const (
@@ -30,18 +19,34 @@ const (
 	DBHost     = "ec2-54-75-230-123.eu-west-1.compute.amazonaws.com"
 )
 
-// Connection to PostgreSQL
-func GetPgConnection() (*DB, error) {
+func init() {
+	var err error
 	dbConnectionString := fmt.Sprintf("user=%s password=%s dbname=%s host=%s sslmode=require", DBUser, DBPassword, DBName, DBHost)
-	db, err := sql.Open("postgres", dbConnectionString)
-
+	DB, err = sql.Open("postgres", dbConnectionString)
 	if err != nil {
-		return nil, err
+		log.Fatal(err)
+	}
+	return
+}
+
+// create a random UUID with from RFC 4122
+// adapted from http://github.com/nu7hatch/gouuid
+func createUUID() string {
+	u := new([16]byte)
+	_, err := rand.Read(u[:])
+	if err != nil {
+		log.Fatalln("Cannot generate UUID", err)
 	}
 
-	if err = db.Ping(); err != nil {
-		return nil, err
-	}
+	// 0x40 is reserved variant from RFC 4122
+	u[8] = (u[8] | 0x40) & 0x7F
+	// Set the four most significant bits (bits 12 through 15) of the
+	// time_hi_and_version field to the 4-bit version number.
+	u[6] = (u[6] & 0xF) | (0x4 << 4)
+	return fmt.Sprintf("%x-%x-%x-%x-%x", u[0:4], u[4:6], u[6:8], u[8:10], u[10:])
+}
 
-	return &DB{db}, nil
+// hash plaintext with SHA-1
+func Encrypt(plaintext string) string {
+	return fmt.Sprintf("%x", sha1.Sum([]byte(plaintext)))
 }
