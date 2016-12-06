@@ -1,11 +1,11 @@
 package main
 
 import (
+	"github.com/bnsd55/ionic-project/Routes"
 	_ "github.com/lib/pq"
 	"log"
 	"net/http"
 	"os"
-	"github.com/bnsd55/ionic-project/Routes"
 )
 
 func main() {
@@ -15,7 +15,7 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 
-	err := http.ListenAndServe(":" + port, Routes.GetRoutes())
+	err := http.ListenAndServe(":"+port, Routes.GetRoutes())
 	if err != nil {
 		log.Fatalln("Server error: ", err)
 	}

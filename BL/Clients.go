@@ -1,13 +1,13 @@
 package BL
 
 import (
-	"net/http"
-	"github.com/julienschmidt/httprouter"
-	"github.com/bnsd55/ionic-project/Models"
 	"encoding/json"
-	"log"
-	"github.com/bnsd55/ionic-project/DAL"
 	"fmt"
+	"github.com/bnsd55/ionic-project/DAL"
+	"github.com/bnsd55/ionic-project/Models"
+	"github.com/julienschmidt/httprouter"
+	"log"
+	"net/http"
 )
 
 func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Params) {

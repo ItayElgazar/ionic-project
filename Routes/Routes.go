@@ -1,10 +1,10 @@
 package Routes
 
 import (
-	"github.com/julienschmidt/httprouter"
-	"os"
 	"fmt"
+	"github.com/julienschmidt/httprouter"
 	"net/http"
+	"os"
 )
 
 func GetRoutes() *httprouter.Router {
@@ -29,4 +29,3 @@ func GetRoutes() *httprouter.Router {
 
 	return router
 }
-

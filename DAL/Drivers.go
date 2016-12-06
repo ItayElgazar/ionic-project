@@ -5,9 +5,9 @@ import (
 )
 
 type Driver struct {
-	Id int
-	Uuid string
-	Name string
+	Id        int
+	Uuid      string
+	Name      string
 	CreatedAt time.Time
 }
 
@@ -173,6 +173,7 @@ func Users() (users []Driver, err error) {
 	rows.Close()
 	return
 }
+
 /*
 // Get a single user given the email
 func UserByEmail(email string) (user Driver, err error) {

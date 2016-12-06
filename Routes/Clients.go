@@ -1,8 +1,8 @@
 package Routes
 
 import (
-	"github.com/julienschmidt/httprouter"
 	"github.com/bnsd55/ionic-project/BL"
+	"github.com/julienschmidt/httprouter"
 )
 
 func GetClientsRouting(router *httprouter.Router) {

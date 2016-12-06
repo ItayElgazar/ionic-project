@@ -1,9 +1,9 @@
 package DAL
 
 import (
-	"time"
-	"log"
 	"github.com/bnsd55/ionic-project/Models"
+	"log"
+	"time"
 )
 
 func CreateClient(client Models.Client) int64 {
@@ -17,10 +17,10 @@ func CreateClient(client Models.Client) int64 {
 	defer stmt.Close()
 	res, err := stmt.Exec(createUUID(), client.Name, client.PhoneNumber, time.Now(), false, generateVerificationCode())
 
-	 if err != nil {
-		 log.Panic(err)
-		 return 0
-	 }
+	if err != nil {
+		log.Panic(err)
+		return 0
+	}
 
 	affectedRows, err := res.RowsAffected()
 

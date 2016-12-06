@@ -30,7 +30,7 @@ func init() {
 }
 
 // Generate verification code to verify user
-func generateVerificationCode () string {
+func generateVerificationCode() string {
 	return "1234"
 }
 
