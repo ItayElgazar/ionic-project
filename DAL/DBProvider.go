@@ -29,6 +29,11 @@ func init() {
 	return
 }
 
+// Generate verification code to verify user
+func generateVerificationCode () string {
+	return "1234"
+}
+
 // create a random UUID with from RFC 4122
 // adapted from http://github.com/nu7hatch/gouuid
 func createUUID() string {
