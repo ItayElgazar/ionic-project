@@ -5,9 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"fmt"
-	"github.com/bnsd55/ionic-project/BL"
-	"github.com/julienschmidt/httprouter"
+	"github.com/bnsd55/ionic-project/Routes"
 )
 
 func main() {
@@ -17,24 +15,7 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 
-	router := httprouter.New()
-
-	// Client Routes
-	router.POST("/clients", BL.CreateClient)
-
-	// Static files
-	pwd, error := os.Getwd()
-
-	if error != nil {
-		fmt.Println(error)
-		os.Exit(1)
-	}
-
-	fmt.Println(pwd)
-
-	router.ServeFiles("/static/*filepath", http.Dir(pwd))
-
-	err := http.ListenAndServe(":" + port, router)
+	err := http.ListenAndServe(":" + port, Routes.GetRoutes())
 	if err != nil {
 		log.Fatalln("Server error: ", err)
 	}
