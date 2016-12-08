@@ -25,7 +25,7 @@ func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 		doesUserCreated := DAL.CreateClient(client)
 
 		if doesUserCreated {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
+			//w.Header().Set("Access-Control-Allow-Origin", "*")
 			fmt.Fprint(w, true)
 			// TODO: send verification code to user's phone by calling some function that gets the code we've generated and send it to phone
 		} else {
@@ -48,7 +48,7 @@ func VerifyClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 	}
 
 	if govalidator.IsNumeric(client.PhoneNumber) && govalidator.IsNumeric(client.VerificationCode) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
+		//w.Header().Set("Access-Control-Allow-Origin", "*")
 		fmt.Fprint(w, client.Verify())
 	} else {
 		fmt.Fprint(w, false)
@@ -66,7 +66,7 @@ func UpdateClientEmail(w http.ResponseWriter, r *http.Request, params httprouter
 	}
 
 	if govalidator.IsNumeric(client.PhoneNumber) && govalidator.IsEmail(client.Email) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
+		//w.Header().Set("Access-Control-Allow-Origin", "*")
 		fmt.Fprint(w, client.UpdateClientEmail())
 	} else {
 		fmt.Fprint(w, false)
