@@ -23,8 +23,6 @@ func GetRoutes() *httprouter.Router {
 		os.Exit(1)
 	}
 
-	fmt.Println(pwd)
-
 	router.ServeFiles("/static/*filepath", http.Dir(pwd))
 
 	return router

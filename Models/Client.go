@@ -10,4 +10,5 @@ type Client struct {
 	CreatedAt        time.Time `json:"created_at"`
 	Activated        bool      `json:"activated"`
 	VerificationCode string    `json:"verification_code"`
+	Email            string    `json:"email"`
 }

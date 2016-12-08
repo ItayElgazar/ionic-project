@@ -16,6 +16,7 @@ func main() {
 	}
 
 	err := http.ListenAndServe(":"+port, Routes.GetRoutes())
+
 	if err != nil {
 		log.Fatalln("Server error: ", err)
 	}
