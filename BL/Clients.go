@@ -26,7 +26,7 @@ func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 
 		if doesUserCreated {
 			w.Header().Set("Access-Control-Allow-Origin", "*")
-			fmt.Fprint(w, DAL.CreateClient(client))
+			fmt.Fprint(w, true)
 			// TODO: send verification code to user's phone by calling some function that gets the code we've generated and send it to phone
 		} else {
 			fmt.Fprint(w, false)
