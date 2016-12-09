@@ -19,7 +19,7 @@ func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 
 	if err != nil {
 		fmt.Fprint(w, false)
-		log.Fatal(err)
+		log.Print(err)
 	}
 
 	if govalidator.IsNumeric(client.PhoneNumber) {
