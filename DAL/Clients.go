@@ -13,7 +13,7 @@ func CreateClient(client Models.Client) bool {
 	query := "INSERT INTO clients (uuid, name, phone_number, created_at, activated, verification_code) VALUES ($1, $2, $3, $4, $5, $6)"
 	stmt, err := DB.Prepare(query)
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 		return false
 	}
 
@@ -21,7 +21,7 @@ func CreateClient(client Models.Client) bool {
 	res, err := stmt.Exec(createUUID(), client.Name, client.PhoneNumber, time.Now(), false, generateVerificationCode())
 
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 		return false
 	}
 
@@ -45,18 +45,18 @@ func (client *Client) UpdateClientEmail() bool {
 	stmt, err := DB.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
-		return false
+		return 0
 	}
 
 	defer stmt.Close()
-	res, err := stmt.Exec(client.Email, client.PhoneNumber)
+	res, err := stmt.Exec(client.Email, client.PhoneNumber, time.Now(), false, generateVerificationCode())
 
 	if err != nil {
 		log.Panic(err)
-		return false
+		return 0
 	}
 
 	affectedRows, err := res.RowsAffected()
 
-	return (affectedRows != 0)
+	return affectedRows
 }
