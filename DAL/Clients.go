@@ -37,7 +37,29 @@ func (client *Client) Verify() bool {
 	var verification_code string
 	row.Scan(&verification_code)
 
-	return (verification_code == client.VerificationCode)
+	// Change client status to active
+	if verification_code == client.VerificationCode {
+		query := "UPDATE clients SET activated = $1 WHERE phone_number = $2"
+		stmt, err := DB.Prepare(query)
+		if err != nil {
+			log.Fatal(err)
+			return false
+		}
+
+		defer stmt.Close()
+		res, err := stmt.Exec(true, client.PhoneNumber)
+
+		if err != nil {
+			log.Panic(err)
+			return false
+		}
+
+		affectedRows, err := res.RowsAffected()
+
+		return (affectedRows != 0)
+	} else {
+		return false
+	}
 }
 
 func (client *Client) UpdateClientEmail() bool {
