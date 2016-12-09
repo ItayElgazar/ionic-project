@@ -13,7 +13,7 @@ func CreateClient(client Models.Client) bool {
 	query := "INSERT INTO clients (uuid, name, phone_number, created_at, activated, verification_code) VALUES ($1, $2, $3, $4, $5, $6)"
 	stmt, err := DB.Prepare(query)
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
 		return false
 	}
 
@@ -21,7 +21,7 @@ func CreateClient(client Models.Client) bool {
 	res, err := stmt.Exec(createUUID(), client.Name, client.PhoneNumber, time.Now(), false, generateVerificationCode())
 
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
 		return false
 	}
 
