@@ -21,22 +21,20 @@ func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 		fmt.Fprint(w, "error")
 	}
 
-	fmt.Fprint(w, true)
-
-	/*
 	if govalidator.IsNumeric(client.PhoneNumber) {
-		doesUserCreated := DAL.CreateClient(client)
+		fmt.Fprint(w, true)
+		/*doesUserCreated := DAL.CreateClient(client)
 
 		if doesUserCreated {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
+			//w.Header().Set("Access-Control-Allow-Origin", "*")
 			fmt.Fprint(w, true)
 			// TODO: send verification code to user's phone by calling some function that gets the code we've generated and send it to phone
 		} else {
 			fmt.Fprint(w, false)
-		}
+		}*/
 	} else {
 		fmt.Fprint(w, false)
-	}*/
+	}
 }
 
 // Verify client
