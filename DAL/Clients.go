@@ -45,7 +45,7 @@ func (client *Client) UpdateClientEmail() bool {
 	stmt, err := DB.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
-		return 0
+		return false
 	}
 
 	defer stmt.Close()
@@ -53,10 +53,10 @@ func (client *Client) UpdateClientEmail() bool {
 
 	if err != nil {
 		log.Panic(err)
-		return 0
+		return false
 	}
 
 	affectedRows, err := res.RowsAffected()
 
-	return affectedRows
+	return (affectedRows != 0)
 }
