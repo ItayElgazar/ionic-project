@@ -13,7 +13,7 @@ import (
 
 // Adds client to db
 func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	defer r.Body.Close()
+	/*//defer r.Body.Close()
 	var client Models.Client
 	err := json.NewDecoder(r.Body).Decode(&client)
 
@@ -33,8 +33,9 @@ func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 		}
 	} else {
 		fmt.Fprint(w, false)
-	}
+	}*/
 
+	fmt.Fprint(w, true)
 }
 
 // Verify client
