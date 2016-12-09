@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/asaskevich/govalidator"
 	"github.com/bnsd55/ionic-project/DAL"
-	"github.com/bnsd55/ionic-project/Models"
 	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"
