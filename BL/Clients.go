@@ -18,10 +18,10 @@ func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 	err := json.NewDecoder(r.Body).Decode(&client)
 
 	if err != nil {
-		log.Panic(err)
+		fmt.Fprint(w, err)
 	}
 
-	fmt.Fprint(w, client)/*
+	/*
 	if govalidator.IsNumeric(client.PhoneNumber) {
 		doesUserCreated := DAL.CreateClient(client)
 
