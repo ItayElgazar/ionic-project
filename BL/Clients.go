@@ -45,7 +45,7 @@ func VerifyClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 	err := json.NewDecoder(r.Body).Decode(&client)
 
 	if err != nil {
-		log.Panic(err)
+		log.Print(err)
 	}
 
 	if govalidator.IsNumeric(client.PhoneNumber) && govalidator.IsNumeric(client.VerificationCode) {
@@ -63,7 +63,7 @@ func UpdateClientEmail(w http.ResponseWriter, r *http.Request, params httprouter
 	err := json.NewDecoder(r.Body).Decode(&client)
 
 	if err != nil {
-		log.Panic(err)
+		log.Print(err)
 	}
 
 	if govalidator.IsNumeric(client.PhoneNumber) && govalidator.IsEmail(client.Email) {

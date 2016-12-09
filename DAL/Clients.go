@@ -44,7 +44,7 @@ func (client *Client) UpdateClientEmail() bool {
 	query := "UPDATE clients SET email = $1 WHERE phone_number = $2"
 	stmt, err := DB.Prepare(query)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		return false
 	}
 
@@ -52,7 +52,7 @@ func (client *Client) UpdateClientEmail() bool {
 	res, err := stmt.Exec(client.Email, client.PhoneNumber, time.Now(), false, generateVerificationCode())
 
 	if err != nil {
-		log.Panic(err)
+		log.Print(err)
 		return false
 	}
 
