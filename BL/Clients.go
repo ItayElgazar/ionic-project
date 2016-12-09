@@ -13,6 +13,7 @@ import (
 
 // Adds client to db
 func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	defer r.Body.Close()
 	var client Models.Client
 	err := json.NewDecoder(r.Body).Decode(&client)
