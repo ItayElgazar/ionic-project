@@ -41,6 +41,8 @@ func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 
 // Verify client
 func VerifyClient(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
 	defer r.Body.Close()
 	var client DAL.Client
 	err := json.NewDecoder(r.Body).Decode(&client)
@@ -59,6 +61,8 @@ func VerifyClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 
 // Update user's email
 func UpdateClientEmail(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
 	defer r.Body.Close()
 	var client DAL.Client
 	err := json.NewDecoder(r.Body).Decode(&client)
