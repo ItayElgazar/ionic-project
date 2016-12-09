@@ -14,6 +14,8 @@ import (
 // Adds client to db
 func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	defer r.Body.Close()
 	var client Models.Client
 	err := json.NewDecoder(r.Body).Decode(&client)
