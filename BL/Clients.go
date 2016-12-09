@@ -18,7 +18,7 @@ func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 	err := json.NewDecoder(r.Body).Decode(&client)
 
 	if err != nil {
-		fmt.Fprint(w, r.Body)
+		fmt.Fprint(w, client)
 	}
 
 	/*
