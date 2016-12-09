@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/asaskevich/govalidator"
 	"github.com/bnsd55/ionic-project/DAL"
+	"github.com/bnsd55/ionic-project/Models"
 	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"
@@ -12,7 +13,7 @@ import (
 
 // Adds client to db
 func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	/*//defer r.Body.Close()
+	//defer r.Body.Close()
 	var client Models.Client
 	err := json.NewDecoder(r.Body).Decode(&client)
 
@@ -20,6 +21,7 @@ func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 		log.Panic(err)
 	}
 
+	fmt.Fprint(w, client)/*
 	if govalidator.IsNumeric(client.PhoneNumber) {
 		doesUserCreated := DAL.CreateClient(client)
 
@@ -33,8 +35,6 @@ func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 	} else {
 		fmt.Fprint(w, false)
 	}*/
-
-	fmt.Fprint(w, true)
 }
 
 // Verify client
