@@ -21,7 +21,7 @@ func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 		fmt.Fprint(w, "error")
 	}
 
-	fmt.Fprint(w, client)
+	fmt.Fprint(w, true)
 
 	/*
 	if govalidator.IsNumeric(client.PhoneNumber) {
