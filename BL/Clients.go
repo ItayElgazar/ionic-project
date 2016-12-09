@@ -18,14 +18,13 @@ func CreateClient(w http.ResponseWriter, r *http.Request, params httprouter.Para
 	err := json.NewDecoder(r.Body).Decode(&client)
 
 	if err != nil {
-		//log.Panic(err)
+		log.Panic(err)
 	}
 
 	if govalidator.IsNumeric(client.PhoneNumber) {
 		doesUserCreated := DAL.CreateClient(client)
 
 		if doesUserCreated {
-			//w.Header().Set("Access-Control-Allow-Origin", "*")
 			fmt.Fprint(w, true)
 			// TODO: send verification code to user's phone by calling some function that gets the code we've generated and send it to phone
 		} else {
